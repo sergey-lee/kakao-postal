@@ -3,7 +3,6 @@
 <html lang="ko">
   <head>
     <title>주소 찾기</title>
-    
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -39,6 +38,18 @@
         window.webkit.messageHandlers.callBackHandler.postMessage(postData);
       }
 
+      function postMessageToAndroid(postData) {
+        window.Android.callBackHandler(JSON.stringify(postData));
+      }
+
+      function postMessage(postData) {
+        if (window.Android) {
+          postMessageToAndroid(postData);
+        } else if (window.webkit && window.webkit.messageHandlers) {
+          postMessageToiOS(postData);
+        }
+      }
+
       var element_layer = document.getElementById("layer");
       function execDaumPostcode() {
         new daum.Postcode({
@@ -59,7 +70,7 @@
               buildingName: data.buildingName,
               apartment: data.apartment
             };
-            window.postMessageToiOS(postData);
+            window.postMessage(postData);
           },
           width: "100%",
           height: "100%",
