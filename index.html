@@ -15,20 +15,7 @@
     ></div>
     <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
-      window.addEventListener("message", onReceivedPostMessage, false);
-
-      function onReceivedPostMessage(event) {
-        var action = event.data.action;
-        var params = event.data.params;
-      }
-
-      function onReceivedActivityMessageViaJavascriptInterface(json) {
-        var data = JSON.parse(json);
-        var action = data.action;
-        var params = data.params;
-      }
-
-      function postMessage(roadAddress) {
+      function sendToDart(roadAddress) {
         if (window.Android) {
           window.Android.callBackHandler(roadAddress);
         } else if (window.webkit && window.webkit.messageHandlers) {
@@ -41,7 +28,7 @@
       function execDaumPostcode() {
         new daum.Postcode({
           oncomplete: function (data) {
-            postMessage(data.roadAddress);
+            sendToDart(data.roadAddress);
           },
           width: "100%",
           height: "100%",
